@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hiveapp/extensions/space_exs.dart';
 import 'package:hiveapp/utils/colors.dart';
 
 class CustomDrawer extends StatelessWidget {
-   CustomDrawer({super.key});
+  CustomDrawer({super.key});
 
   final List<IconData> icons = [
     CupertinoIcons.home,
@@ -17,9 +16,13 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var textTheme = Theme.of(context).textTheme;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final avatarRadius = screenWidth * 0.13; // relative to width
+    final verticalPadding = screenHeight * 0.1; // top/bottom padding
+
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 90),
+      padding: EdgeInsets.symmetric(vertical: verticalPadding),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: AppColors.primaryGradientColor,
@@ -30,30 +33,40 @@ class CustomDrawer extends StatelessWidget {
       child: Column(
         children: [
           CircleAvatar(
-            radius: 50,
+            radius: avatarRadius,
             backgroundImage: AssetImage("assets/img/avtar.jpg"),
           ),
-          8.h,
-          Text("Yogi", style: textTheme.displayMedium),
-          Text("Flutter Dev.", style: textTheme.displaySmall),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 30,horizontal: 10),
-            width: double.infinity,
-            height: 300,
+          SizedBox(height: screenHeight * 0.015),
+          Text("Yogi", style: Theme.of(context).textTheme.displayMedium),
+          Text("Flutter Dev.", style: Theme.of(context).textTheme.displaySmall),
+          SizedBox(height: screenHeight * 0.04),
+
+          // Responsive ListTile Container
+          Expanded(
             child: ListView.builder(
               itemCount: icons.length,
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
                   onTap: () {
-                    print(texts[index] + " Item tapped");
+                    print("${texts[index]} Item tapped");
                   },
                   child: Container(
-                    margin: EdgeInsets.all(3),
+                    margin: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.05,
+                      vertical: screenHeight * 0.005,
+                    ),
                     child: ListTile(
-                      leading: Icon(icons[index], color: Colors.white, size: 30),
+                      leading: Icon(
+                        icons[index],
+                        color: Colors.white,
+                        size: screenWidth * 0.07, // 28–30px depending on device
+                      ),
                       title: Text(
                         texts[index],
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: screenWidth * 0.045,
+                        ),
                       ),
                     ),
                   ),

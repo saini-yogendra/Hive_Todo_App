@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hiveapp/data/hive_data_store.dart';
 import 'package:hiveapp/models/task.dart';
 import 'package:hiveapp/view/home/home_view.dart';
-import 'package:hiveapp/view/tasks/task_view.dart';
 
 void main() async{
 
@@ -20,15 +18,13 @@ void main() async{
 
   // this is step is not necessary
   // delete data from previous day
-  box.values.forEach(
-      (task) {
+  for (var task in box.values) {
         if (task.createdAtTime.day != DateTime.now().day) {
           task.delete();
         } else {
 
         }
       }
-  );
 
   runApp(BaseWidget(child: MyApp()));
 }
@@ -38,10 +34,10 @@ void main() async{
 // to pass data betwwen widgets. while developing an app
 // you will need some data from your parent's widgets or
 // grant parent widgets or maybe beyond that
-
 class BaseWidget extends InheritedWidget {
-  BaseWidget({Key? key, required this.child}) : super(key: key,child: child);
+  BaseWidget({super.key, required this.child}) : super(child: child);
   final HiveDataStore dataStore = HiveDataStore();
+  @override
   final Widget child;
 
   static BaseWidget of(BuildContext context) {

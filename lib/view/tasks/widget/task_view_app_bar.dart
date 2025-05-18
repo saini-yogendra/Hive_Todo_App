@@ -1,25 +1,36 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TaskViewAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const TaskViewAppBar({super.key});
+  final double height;
+
+  const TaskViewAppBar({super.key, required this.height});
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Padding and icon size relative to the height and screen width
+    final leftPadding = screenWidth * 0.05; // 5% of screen width
+    final topPadding = height * 0.13; // 13% of app bar height
+    final iconSize = height * 0.25; // 25% of app bar height
+
     return SizedBox(
       width: double.infinity,
-      height: 150,
+      height: height,
       child: Padding(
-        padding: const EdgeInsets.only(left: 20.0),
+        padding: EdgeInsets.only(left: leftPadding),
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 20.0),
+              padding: EdgeInsets.only(top: topPadding),
               child: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Icon(Icons.arrow_back_ios_new_rounded),
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  size: iconSize,
+                ),
               ),
             ),
           ],
@@ -29,6 +40,5 @@ class TaskViewAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  // TODO: implement preferredSize
-  Size get preferredSize => Size.fromHeight(150);
+  Size get preferredSize => Size.fromHeight(height);
 }
